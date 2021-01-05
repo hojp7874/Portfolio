@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1 class="text-center">그래프 화면</h1>
+  <form action="" method="post">
+    <div class="d-flex">
+      <div class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
+        {% for region in regions %}
+          <label class="btn btn-light">
+            <input type="radio" name="{{ region }}" id="{{ region }}" checked> {{ region }}
+          </label>
+        {% endfor %}
+      </div>
+      <div id="category" class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
+        {% for category in code_set.items %}
+          <label class="btn btn-light">
+            <input type="radio" name="{{ category.1.name }}" id="{{ category.1.name }}" checked> {{ category.1.name }}
+          </label>
+        {% endfor %}
+      </div>
+      <div id="item" class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
+        {% for category in code_set.items %}
+          <label class="btn btn-light active">
+            <input type="radio" name="{{ category.1.name }}" id="{{ category.1.name }}" checked> {{ category.1.name }}
+          </label>
+        {% endfor %}
+      </div>
+      <div id="variety" class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
+        {% for category in code_set.items %}
+          <label class="btn btn-light active">
+            <input type="radio" name="{{ category.1.name }}" id="{{ category.1.name }}" checked> {{ category.1.name }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+  </form>
+  <img src="data:image/png;base64,{{ data }}" class="img-fluid" alt="">
+
+  <script>
+  
+  </script>
+{% endblock content %}
