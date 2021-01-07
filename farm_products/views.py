@@ -44,7 +44,7 @@ def show_graph(request):
         uri = urllib.parse.quote(string)
 
     # 품목코드 data 불러오기
-    code = pd.read_excel('code.xls', sheet_name='코드통합(부류＋품목＋품종코드)')
+    code = pd.read_excel('./code.xls', sheet_name='코드통합(부류＋품목＋품종코드)')
     code_set = {}
     for i in range(code.shape[0]):
         if code.iloc[i, 0] not in code_set:
