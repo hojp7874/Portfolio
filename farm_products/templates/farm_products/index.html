@@ -3,40 +3,134 @@
 {% block content %}
   <h1 class="text-center">그래프 화면</h1>
   <form action="" method="post">
-    <div class="d-flex">
-      <div class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
-        {% for region in regions %}
+  {% csrf_token %}
+    <div class="d-flex justify-content-around">
+      <!-- 지역 -->
+      <div id="regions" class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
+        <label class="btn btn-light">
+          <input type="radio" name="region"> 전체
+        </label>
+        {% for region in regions.items %}
           <label class="btn btn-light">
-            <input type="radio" name="{{ region }}" id="{{ region }}" checked> {{ region }}
+            <input type="radio" name="region" value="{{ region.0 }}"> {{ region.1 }}
           </label>
         {% endfor %}
       </div>
-      <div id="category" class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
-        {% for category in code_set.items %}
-          <label class="btn btn-light">
-            <input type="radio" name="{{ category.1.name }}" id="{{ category.1.name }}" checked> {{ category.1.name }}
-          </label>
-        {% endfor %}
+
+      <!-- 부류 -->
+      <div id="categorys" class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
       </div>
-      <div id="item" class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
-        {% for category in code_set.items %}
-          <label class="btn btn-light active">
-            <input type="radio" name="{{ category.1.name }}" id="{{ category.1.name }}" checked> {{ category.1.name }}
-          </label>
-        {% endfor %}
+
+      <!-- 품목 -->
+      <div id="items" class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
       </div>
-      <div id="variety" class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
-        {% for category in code_set.items %}
-          <label class="btn btn-light active">
-            <input type="radio" name="{{ category.1.name }}" id="{{ category.1.name }}" checked> {{ category.1.name }}
-          </label>
-        {% endfor %}
+
+      <!-- 품종 -->
+      <div id="varietys" class="btn-group btn-group-toggle d-flex flex-column" data-toggle="buttons">
+        <label class="btn btn-light active">
+          <input type="radio" checked> 전체
+        </label>
       </div>
+
+      <input class="btn btn-primary" type="submit" value="submit">
     </div>
   </form>
   <img src="data:image/png;base64,{{ data }}" class="img-fluid" alt="">
+  <h3>세로축: (원) 가로축: (개월)</h3>
 
   <script>
-  
+    const regions = document.querySelector("#regions").querySelectorAll('input')
+    regions[0].checked = true
+
+    const code_set = {{code_set|safe}}
+
+    // categry 버튼리스트 만들기
+    const categorys = document.querySelector("#categorys")
+    for (i in code_set) {
+      const input = document.createElement("input")
+      input.type = "radio"
+      input.name = "category"
+      input.value = i
+      const label = document.createElement("label")
+      label.classList.add("btn", "btn-light")
+      label.innerText = code_set[i].name
+      label.appendChild(input)
+      categorys.appendChild(label)
+    }
+    categorys.querySelector("input").parentNode.classList.add("active")
+    categorys.querySelector("input").checked = true
+    // 카테고리 눌렀을때 로직
+    function recog_items() {
+      // category 눌린버튼 찾기
+      category_inputs = categorys.querySelectorAll("input")
+      for (var i=0; i < category_inputs.length; i++) {
+        if (category_inputs[i].parentNode.classList.contains("active") == true) {
+          category = code_set[category_inputs[i].value]
+        }
+      }
+
+      // item 버튼리스트 만들기
+      const items = document.querySelector("#items")
+      items.innerText = ""
+      for (i in category) {
+        if (i == 'name') {
+          break
+        }
+        const input = document.createElement("input")
+        input.type = "radio"
+        input.name = "item"
+        input.value = i
+        const label = document.createElement("label")
+        label.classList.add("btn", "btn-light")
+        label.innerText = category[i].name
+        label.appendChild(input)
+        items.appendChild(label)
+      }
+      items.querySelector("input").parentNode.classList.add("active")
+      items.querySelector("input").checked = true
+      recog_varietys.call()
+    }
+
+    // item 눌렀을때 로직
+    function recog_varietys() {
+      // item 눌린버튼 찾기
+      items_inputs = items.querySelectorAll("input")
+      for (var i=0; i < items_inputs.length; i++) {
+        if (items_inputs[i].parentNode.classList.contains("active") == true) {
+          item = category[items_inputs[i].value]
+        }
+      }
+
+      // variety 버튼리스트 만들기
+      const varietys = document.querySelector("#varietys")
+      varietys.innerHTML = '<label class="btn btn-light active"> <input type="radio" checked> 전체</label>'
+      for (i in item) {
+        if (i == 'name') {
+          break
+        }
+        const input = document.createElement("input")
+        input.type = "radio"
+        input.name = "variety"
+        if (i.length == 1) {
+          console.log(i)
+          input.value = `0${i}`
+        } else {
+          input.value = i
+        }
+        const label = document.createElement("label")
+        label.classList.add("btn", "btn-light")
+        label.innerText = item[i].name
+        label.appendChild(input)
+        varietys.appendChild(label)
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", recog_items)
+    document.addEventListener("DOMContentLoaded", function () {
+    })
+
+    categorys.addEventListener("click", recog_items)
+    items.addEventListener("click", recog_varietys)
+
   </script>
 {% endblock content %}
