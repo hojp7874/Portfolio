@@ -1,5 +1,7 @@
 from urllib.request import urlopen, Request
 import json
+import requests
+from bs4 import BeautifulSoup
 
 
 def kamis(**kwargs):
@@ -14,8 +16,12 @@ def kamis(**kwargs):
 
     for key, value in kwargs.items():
         queryParams += f'&{key}={value}'
-    request = Request(url + queryParams)
-    request.get_method = lambda:'GET'
-    response_body = urlopen(request).read().decode('utf8')
+    # request = Request(url + queryParams)
+    # request.get_method = lambda:'GET'
+    headers = {'User-Agent':'Mozilla/5.0'}
+    response = requests.get(url+queryParams, headers=headers)
+    # soup = BeautifulSoup(request.text)
+    # response_body = urlopen(request).read().decode('utf8')
     
-    return json.loads(response_body)
+    # return json.loads(response_body)
+    return json.loads(response.text)
