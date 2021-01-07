@@ -5,7 +5,7 @@ import json
 def kamis(**kwargs):
     url = 'http://www.kamis.or.kr/service/price/xml.do'
 
-    with open('secret.json') as jsonfile:
+    with open('./Portfolio/secret.json') as jsonfile:
         data = json.load(jsonfile)
         CERT_KEY = data["p_cert_key"]
         CERT_ID = data["p_cert_id"]
