@@ -1,19 +1,28 @@
 from django.shortcuts import render
 
 import io
-import os
 import urllib, base64
 import pandas as pd
 import matplotlib.pyplot as plt
 from .kamis import kamis
 
 # Create your views here.
+def test(request):
+    if request.method == 'POST':
+        context = {
+            'method':'post'
+        }
+    else:
+        context = {
+            'method':'get'
+        }
+    return render(request, 'farm_products/test.html', context)
+
+
 def show_graph(request):
     uri = ""
     region = {1101:'서울', 2100:'부산', 2200:'대구', 2300:'인천', 2401:'광주', 2501:'대전', 2601:'울산', 3111:'수원', 3211:'춘천', 3311:'청주', 3511:'전주', 3711:'포항', 3911:'제주', 3113:'의정부', 3613:'순천', 3714:'안동', 3814:'창원', 3145:'용인'}
     if request.method == 'POST':
-        print(request.POST)
-
         kwargs = {'action':'monthlySalesList', 'p_returntype':'json'}
         kwargs['p_itemcode'] = request.POST['item']
         kwargs['p_yyyy'] = '2020'
