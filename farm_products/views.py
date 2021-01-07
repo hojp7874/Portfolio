@@ -45,19 +45,18 @@ def show_graph(request):
         uri = urllib.parse.quote(string)
 
     # 품목코드 data 불러오기
-    context = {'path':os.getcwd()}
-    # code = pd.read_excel('code.xls', sheet_name='코드통합(부류＋품목＋품종코드)')
-    # code_set = {}
-    # for i in range(code.shape[0]):
-    #     if code.iloc[i, 0] not in code_set:
-    #         code_set[code.iloc[i, 0]] = {'name':code.iloc[i, 1]}
-    #     if code.iloc[i, 2] not in code_set[code.iloc[i, 0]]:
-    #         code_set[code.iloc[i, 0]][code.iloc[i, 2]] = {'name':code.iloc[i, 3]}
-    #     if code.iloc[i, 4] not in code_set[code.iloc[i, 0]][code.iloc[i, 2]]:
-    #         code_set[code.iloc[i, 0]][code.iloc[i, 2]][code.iloc[i, 4]] = {'name':code.iloc[i, 5]}
-    # context = {
-    #     'data':uri,
-    #     'regions': region,
-    #     'code_set':code_set,
-    # }
-    return render(request, 'farm_products/test.html', context)
+    code = pd.read_excel('./Portfolio/code.xls', sheet_name='코드통합(부류＋품목＋품종코드)')
+    code_set = {}
+    for i in range(code.shape[0]):
+        if code.iloc[i, 0] not in code_set:
+            code_set[code.iloc[i, 0]] = {'name':code.iloc[i, 1]}
+        if code.iloc[i, 2] not in code_set[code.iloc[i, 0]]:
+            code_set[code.iloc[i, 0]][code.iloc[i, 2]] = {'name':code.iloc[i, 3]}
+        if code.iloc[i, 4] not in code_set[code.iloc[i, 0]][code.iloc[i, 2]]:
+            code_set[code.iloc[i, 0]][code.iloc[i, 2]][code.iloc[i, 4]] = {'name':code.iloc[i, 5]}
+    context = {
+        'data':uri,
+        'regions': region,
+        'code_set':code_set,
+    }
+    return render(request, 'farm_products/index.html', context)
