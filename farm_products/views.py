@@ -39,7 +39,6 @@ def show_graph(request):
         response = kamis(**kwargs)
         plt.figure()
         data = {}
-        print(response['price'][0]['item'][0].values())
         for item in response['price'][0]['item']:
             data[item['yyyy']] = [(0 if (value == '-') else int(value.replace(',', ''))) for value in item.values()][1:-1]
         df = pd.DataFrame(data)

@@ -20,8 +20,8 @@ def kamis(**kwargs):
     # request.get_method = lambda:'GET'
     headers = {'User-Agent':'Mozilla/5.0'}
     response = requests.get(url+queryParams, headers=headers)
-    # soup = BeautifulSoup(request.text)
+    # soup = BeautifulSoup(response.text)
     # response_body = urlopen(request).read().decode('utf8')
     
     # return json.loads(response_body)
-    return json.loads(response.text)
+    return json.loads(response.content.decode('utf-8'))
