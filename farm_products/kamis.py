@@ -24,4 +24,4 @@ def kamis(**kwargs):
     # response_body = urlopen(request).read().decode('utf8')
     
     # return json.loads(response_body)
-    return json.loads(response.content.decode('utf-8'))
+    return json.loads(response.content.decode())
