@@ -17,11 +17,11 @@ def kamis(**kwargs):
     for key, value in kwargs.items():
         queryParams += f'&{key}={value}'
     headers = {'User-Agent':'Mozilla/5.0'}
-    # response = Request(url+queryParams, headers=headers)
-    # response.get_method = lambda:'GET'
-    response = requests.get(url+queryParams).json()
+    response = Request(url+queryParams, headers=headers)
+    response.get_method = lambda:'GET'
+    # response = requests.get(url+queryParams).json()
     # soup = BeautifulSoup(response.text)
-    # response_body = urlopen(response).read().decode('utf8')
+    response_body = urlopen(response).read()
     
-    # return json.loads(response_body)
-    return response
+    return json.loads(response_body)
+    # return response
